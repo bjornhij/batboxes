@@ -111,6 +111,10 @@ use app\components\View;
 		    	<?= $form->field($model, 'cluster')->widget(Select2::className(), [
 	    			'options' => ['placeholder' => Yii::t('app', 'Selecteer een cluster')],
 	    			'pluginOptions' => [
+<<<<<<< HEAD
+=======
+	    				'minimumInputLength' => 2,
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 	    				'tags' => true,
 	    				'tokenSeparators' => [',', ' '],
 	    				'ajax' => [

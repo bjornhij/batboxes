@@ -25,6 +25,7 @@ use yii\helpers\Url;
 				'format'	=> 'html'
 			],
 			[
+<<<<<<< HEAD
 				'label' 	=> Yii::t('app', 'Waarnemer(s)'),
 				'value' 	=> function($model, $key, $index, $column) {
 					if($model->getObservers()->exists()) {
@@ -37,6 +38,13 @@ use yii\helpers\Url;
 					return '#VERWIJDERD';
 				},
 				'format' 	=> 'html',
+=======
+				'attribute' => 'observer_id',
+				'label'		=> Yii::t('app', 'Waarnemer'),
+				'value' 	=> function($model, $key, $index, $column) {
+					return $model->observer->username;
+				}
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 			],
 		],
 		'clientOptions' => [

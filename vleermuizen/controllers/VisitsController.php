@@ -7,7 +7,10 @@ use app\models\Visits;
 use app\models\Projects;
 use app\models\VisitBoxes;
 use app\models\Observations;
+<<<<<<< HEAD
 use app\models\VisitObservers;
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 class VisitsController extends Controller {
 	
@@ -84,6 +87,7 @@ class VisitsController extends Controller {
 							Observations::createNullObservation($model->id, $box->id);
 				
 				}
+<<<<<<< HEAD
 				
 				
 				/* Register observers by this visit */
@@ -96,6 +100,8 @@ class VisitsController extends Controller {
 						$visitObservers->save();
 					}
 				}
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 				/* Redirect on success */
 				return $this->redirect(Url::toRoute('visits/detail/'.$model->id));

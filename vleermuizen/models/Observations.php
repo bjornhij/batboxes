@@ -39,7 +39,10 @@ use yii\bootstrap\Html;
  * @property integer 	$validated_by_id
  * @property string 	$validated_date
  * @property integer	$number
+<<<<<<< HEAD
  * 
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
  */
 
 class Observations extends ActiveRecord {
@@ -84,7 +87,11 @@ class Observations extends ActiveRecord {
     		self::OBSERVATION_TYPE_SIGHT 	=> Yii::t('app', 'zicht'),
 			self::OBSERVATION_TYPE_MANURE 	=> Yii::t('app', 'mest'),
     		self::OBSERVATION_TYPE_CATCH 	=> Yii::t('app', 'vangst'),
+<<<<<<< HEAD
     		self::OBSERVATION_TYPE_NULL		=> Yii::t('app', 'nul'),
+=======
+    		self::OBSERVATION_TYPE_NULL		=> Yii::t('app', 'null'),
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
     	];
     }
 
@@ -203,12 +210,15 @@ class Observations extends ActiveRecord {
 				$this->visit->observation_counter++;
 		    	$this->visit->save();
 	    	}
+<<<<<<< HEAD
 	    	if(!$this->isNewRecord && (!empty($this->validated_by_id) || !empty($this->validated_date))) {
 	    		if(!is_object(Yii::$app->user->getIdentity()) || !Yii::$app->user->getIdentity()->hasRole(['validator', 'administrator'])) {
 	    			$this->validated_by_id 	= NULL;
 	    			$this->validated_date 	= NULL;
 	    		}	
 	    	}
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 	    	return true;
     	}
     	
@@ -222,13 +232,18 @@ class Observations extends ActiveRecord {
             [['manure_collected', 'catch_parasite_collected', 'dead', 'deleted'], 'boolean'],
             [['catch_forearm_right', 'catch_forearm_left', 'number'], 'number'],
             [['remarks', 'catch_weight'], 'string'],
+<<<<<<< HEAD
             [['date_created', 'date_updated', 'validated_date', 'number', 'deleteImage', 'ndff_id', 'ndff_failed'], 'safe'],
+=======
+            [['date_created', 'date_updated', 'validated_date', 'number', 'deleteImage', 'ndff_id', 'ndff_failed.'], 'safe'],
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
             [['manure_collection', 'catch_parasite_collection', 'picture', 'catch_ring_code', 'catch_transponder_code', 'catch_radio_transmitter_code', 'catch_dna'], 'string', 'max' => 2044],
         	[['taxon_id', 'species_id'], 'required', 'when' => function(){
         		if(in_array($this->observation_type, [self::OBSERVATION_TYPE_CATCH, self::OBSERVATION_TYPE_SIGHT]))
         			return true;
         		return false;
         	}],
+<<<<<<< HEAD
         	['observation_type', 'compare', 'compareValue' => self::OBSERVATION_TYPE_NULL, 'operator' => '!==', 'when' => function() {
         		if(Visits::hasNotNullObservations($this->visit_id, $this->id) && $this->observation_type == self::OBSERVATION_TYPE_NULL) {
         			$this->addError('observation_type', Yii::t('app', 'Type mag niet gelijk zijn aan nul wanneer er zicht, mest of vangst waarneming bestaan op dit bezoek.'));
@@ -240,6 +255,8 @@ class Observations extends ActiveRecord {
         		if($this->observation_type <> self::OBSERVATION_TYPE_NULL)
         			return true;
         	}]
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
         ];
     }
 
@@ -280,8 +297,11 @@ class Observations extends ActiveRecord {
             'validated_by_id' 				=> Yii::t('app', 'Gevalideerd'),
             'validated_date' 				=> Yii::t('app', 'Validatie datum'),
         	'number'               			=> Yii::t('app', '#'),
+<<<<<<< HEAD
         	'ndff_id'						=> Yii::t('app', 'NDFF ID'),
         	'ndff_failed'					=> Yii::t('app', 'NDFF Failed'),
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
         ];
     }
     
@@ -358,7 +378,11 @@ class Observations extends ActiveRecord {
     	$this->save();
     }
     
+<<<<<<< HEAD
 	public function isAuthorized() {
+=======
+public function isAuthorized() {
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
     	$user_id = (Yii::$app->user->isGuest) ? 0 : Yii::$app->user->getId();
     	
     	if(!is_object($this->box) || $this->box->deleted)

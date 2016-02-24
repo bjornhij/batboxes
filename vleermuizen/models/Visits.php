@@ -7,6 +7,10 @@ use Yii;
  *
  * @property integer 	$id
  * @property integer 	$project_id
+<<<<<<< HEAD
+=======
+ * @property integer 	$observer_id
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
  * @property date 		$date
  * @property integer 	$count_completeness
  * @property integer 	$checked_all
@@ -27,8 +31,12 @@ class Visits extends ActiveRecord {
 	const COUNT_COMPLETENESS_EXACT 		= 1;
 	const COUNT_COMPLETENESS_ESTIMATED 	= 2;
 	
+<<<<<<< HEAD
 	public $checked_boxes 	= [];
 	public $observers 		= [];
+=======
+	public $checked_boxes = [];
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 	public static function getCountCompletenessOptions() {
 		return [
@@ -44,6 +52,7 @@ class Visits extends ActiveRecord {
     public static function find() {
     	return (new \app\models\queries\VisitsQuery(get_called_class()))->where(['visits.deleted' => false]);
     }
+<<<<<<< HEAD
    
     public static function hasNotNullObservations($visit_id, $observation_id = NULL) {
     	return (Observations::find()->where(['and', ['visit_id' => $visit_id], ['<>', 'observation_type', Observations::OBSERVATION_TYPE_NULL], ['<>', 'id', $observation_id], ['deleted' => false]])->exists()) ? true : false;
@@ -65,6 +74,19 @@ class Visits extends ActiveRecord {
             [['date_created', 'date_updated'], 'safe'],
             [['remarks'], 'string'],
             [['deleted'], 'boolean'],
+=======
+    
+    public function rules() {
+        return [
+            [['project_id', 'date', 'box_open', 'cleaned', 'checked_all'], 'required'],
+            [['project_id', 'observer_id', 'count_completeness', 'checked_all', 'blur', 'box_open', 'cleaned'], 'integer'],
+        	['embargo', 'date', 'format' => 'php:d-m-Y'],
+        	['date', 'date', 'format' => 'php:d-m-Y', 'max' => strtotime("23:59 today"), 'tooBig' => Yii::t('app', 'Datum mag niet in de toekomst liggen.')],
+            [['observer_id', 'date_created', 'date_updated'], 'safe'],
+            [['remarks'], 'string'],
+            [['deleted'], 'boolean'],
+        	['observer_id', 'default', 'value' => Yii::$app->user->getId()],
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
         	['checked_boxes', 'required',  'when' => function($model) {
         		return (!$model->checked_all && $model->isNewRecord) ? true : false;
         	}],
@@ -75,7 +97,11 @@ class Visits extends ActiveRecord {
         return [
             'id'                    => Yii::t('app', 'ID'),
             'project_id'            => Yii::t('app', 'Project'),
+<<<<<<< HEAD
             'observers'				=> Yii::t('app', 'Waarnemer(s)'),
+=======
+            'observer_id'           => Yii::t('app', 'Waarnemer'),
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
             'date'                  => Yii::t('app', 'Datum van waarnemingen'),
         	'checked_all'			=> Yii::t('app', 'Alle kasten gecontroleerd?'),
             'remarks'               => Yii::t('app', 'Opmerkingen'),
@@ -90,6 +116,13 @@ class Visits extends ActiveRecord {
         	'observation_counter'   => Yii::t('app', 'Observationcounter'),
         ];
     }
+<<<<<<< HEAD
+=======
+
+    public function getObserver() {
+        return $this->hasOne(Users::className(), ['id' => 'observer_id']);
+    }
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
     
     public function getProject() {
     	return $this->hasOne(Projects::className(), ['id' => 'project_id']);
@@ -103,11 +136,14 @@ class Visits extends ActiveRecord {
     	return $this->hasMany(VisitBoxes::className(), ['visit_id' => 'id']);
     }
     
+<<<<<<< HEAD
     public function getObservers() {
     	return $this->hasMany(Users::className(), ['id' => 'observer_id'])
     	->viaTable('visit_observers', ['visit_id' => 'id']);
     }
     
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
     public function getCheckedAll() {
     	return Yii::t('app', ($this->checked_all) ? "ja" : "nee");
     }
@@ -157,7 +193,11 @@ class Visits extends ActiveRecord {
     	if(!$this->project->isAuthorized())
     		return false;	
     	
+<<<<<<< HEAD
     	if(in_array($user_id, array_keys($this->observers)))
+=======
+    	if($this->observer_id == $user_id)
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
     		return true;
     		
 		if((empty($this->embargo) || $this->embargo <= (new \DateTime())))

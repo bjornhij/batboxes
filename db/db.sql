@@ -209,6 +209,23 @@ CREATE TABLE boxtypes (
 ALTER TABLE public.boxtypes OWNER TO vleermuizen;
 
 --
+<<<<<<< HEAD
+=======
+-- Name: observation_methods; Type: TABLE; Schema: public; Owner: vleermuizen; Tablespace: 
+--
+
+CREATE TABLE observation_methods (
+    id integer NOT NULL,
+    observation_id integer NOT NULL,
+    method_index smallint NOT NULL,
+    other text
+);
+
+
+ALTER TABLE public.observation_methods OWNER TO vleermuizen;
+
+--
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 -- Name: observations; Type: TABLE; Schema: public; Owner: vleermuizen; Tablespace: 
 --
 
@@ -275,6 +292,7 @@ ALTER SEQUENCE observations_id_seq OWNED BY observations.id;
 
 
 --
+<<<<<<< HEAD
 -- Name: project_clusters; Type: TABLE; Schema: public; Owner: vleermuizen; Tablespace: 
 --
 
@@ -343,6 +361,8 @@ ALTER SEQUENCE project_counters_id_seq OWNED BY project_counters.id;
 
 
 --
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 -- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: vleermuizen
 --
 
@@ -377,6 +397,7 @@ CREATE TABLE projects (
 ALTER TABLE public.projects OWNER TO vleermuizen;
 
 --
+<<<<<<< HEAD
 -- Name: session; Type: TABLE; Schema: public; Owner: vleermuizen; Tablespace: 
 --
 
@@ -390,6 +411,8 @@ CREATE TABLE session (
 ALTER TABLE public.session OWNER TO vleermuizen;
 
 --
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 -- Name: species_id_seq; Type: SEQUENCE; Schema: public; Owner: vleermuizen
 --
 
@@ -438,6 +461,7 @@ CREATE TABLE users (
 ALTER TABLE public.users OWNER TO vleermuizen;
 
 --
+<<<<<<< HEAD
 -- Name: visit_boxes; Type: TABLE; Schema: public; Owner: vleermuizen; Tablespace: 
 --
 
@@ -455,6 +479,11 @@ ALTER TABLE public.visit_boxes OWNER TO vleermuizen;
 --
 
 CREATE SEQUENCE visit_closets_id_seq
+=======
+-- Name: visit_id_seq; Type: SEQUENCE; Schema: public; Owner: vleermuizen
+--
+
+CREATE SEQUENCE visit_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -462,6 +491,127 @@ CREATE SEQUENCE visit_closets_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.visit_id_seq OWNER TO vleermuizen;
+
+--
+-- Name: visits; Type: TABLE; Schema: public; Owner: vleermuizen; Tablespace: 
+--
+
+CREATE TABLE visits (
+    id integer DEFAULT nextval('visit_id_seq'::regclass) NOT NULL,
+    project_id integer NOT NULL,
+    observer_id integer NOT NULL,
+    date date NOT NULL,
+    remarks text,
+    deleted boolean DEFAULT false NOT NULL,
+    date_created timestamp with time zone NOT NULL,
+    date_updated timestamp with time zone,
+    box_open integer DEFAULT 0 NOT NULL,
+    cleaned integer DEFAULT 0 NOT NULL,
+    count_completeness integer,
+    blur integer,
+    checked_all integer DEFAULT 0 NOT NULL,
+    embargo date,
+    observation_counter integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.visits OWNER TO vleermuizen;
+
+--
+-- Name: occurences; Type: VIEW; Schema: public; Owner: vleermuizen
+--
+
+CREATE VIEW occurences AS
+ SELECT 'Thijs levert aan' AS rights,
+    concat(owner.fullname,
+        CASE
+            WHEN (projects.owner_id <> projects.main_observer_id) THEN concat(', ', main_observer.fullname)
+            ELSE NULL::text
+        END,
+        CASE
+            WHEN ((visits.observer_id <> projects.owner_id) AND (visits.observer_id <> projects.main_observer_id)) THEN concat(', ', observer.fullname)
+            ELSE NULL::text
+        END) AS rightsholder,
+    concat('http://app.vleermuizen.beta.swigledev.nl/observations/detail/', observations.id) AS "references",
+    'vleermuiskasten.nl, Dutch Mammal Society, link THIJS' AS "institutionID",
+    'Thijs levert aan' AS "informationWithheld",
+        CASE
+            WHEN (visits.blur <> 0) THEN (visits.blur)::numeric
+            WHEN (projects.blur <> (0)::numeric) THEN projects.blur
+            ELSE NULL::numeric
+        END AS "dataGeneralizations",
+    observations.remarks AS "occurrenceRemarks",
+    observer.fullname AS "recordedBy",
+    COALESCE(observations.catch_ring_code, observations.catch_transponder_code, observations.catch_radio_transmitter_code) AS "individualID",
+    observations.sight_quantity AS "individualCount",
+    observations.catch_sex AS sex,
+    observations.age AS "lifeStage",
+    observations.catch_sexual_status AS "reproductiveCondition",
+        CASE
+            WHEN (observations.picture IS NOT NULL) THEN concat('http://app.vleermuizen.beta.swigledev.nl/uploads/observations/', observations.picture)
+            ELSE NULL::text
+        END AS "associatedMedia",
+    concat(boxes.code, ' - ', visits.id, ' - ', observations.number) AS "eventID",
+    'Bat Box Count' AS "samplingProtocol",
+    visits.date AS "eventDate",
+    concat(projects.name, ' - ', projects.remarks) AS "eventRemarks",
+    concat(projects.name, ' - ', boxes.code) AS "locationID",
+    'NL' AS "countryCode",
+    boxes.province AS provincie,
+    boxes.cord_lng AS "decimalLongitude",
+    boxes.cord_lat AS "decimalLatitude",
+    'WGS84' AS "GeodaticDatum",
+        CASE
+            WHEN (observations.validated_by_id IS NOT NULL) THEN 1
+            ELSE 0
+        END AS "identificationVerificationStatus",
+    'Thijs zoekt links uit' AS "taxonID",
+    concat(species.genus, ' ', species.speceus) AS "scientificName",
+    species.genus,
+    'uit soorten, Thijs splitst' AS "specificEpithet",
+    'soorten.beschrijving? Thijs?' AS "nameAuthorship"
+   FROM (((((((observations
+     LEFT JOIN visits ON ((observations.visit_id = visits.id)))
+     LEFT JOIN boxes ON ((observations.box_id = boxes.id)))
+     LEFT JOIN species ON ((observations.species_id = species.id)))
+     LEFT JOIN projects ON ((visits.project_id = projects.id)))
+     LEFT JOIN users owner ON ((projects.owner_id = owner.id)))
+     LEFT JOIN users main_observer ON ((projects.main_observer_id = main_observer.id)))
+     LEFT JOIN users observer ON ((visits.observer_id = observer.id)))
+  WHERE (((visits.embargo IS NULL) OR (visits.embargo < now())) AND ((projects.embargo IS NULL) OR (projects.embargo < now())))
+  ORDER BY visits.date DESC;
+
+
+ALTER TABLE public.occurences OWNER TO vleermuizen;
+
+--
+-- Name: project_clusters; Type: TABLE; Schema: public; Owner: vleermuizen; Tablespace: 
+--
+
+CREATE TABLE project_clusters (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    cluster character varying NOT NULL
+);
+
+
+ALTER TABLE public.project_clusters OWNER TO vleermuizen;
+
+--
+-- Name: project_cluster_id_seq; Type: SEQUENCE; Schema: public; Owner: vleermuizen
+--
+
+CREATE SEQUENCE project_cluster_id_seq
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+<<<<<<< HEAD
 ALTER TABLE public.visit_closets_id_seq OWNER TO vleermuizen;
 
 --
@@ -476,6 +626,35 @@ ALTER SEQUENCE visit_closets_id_seq OWNED BY visit_boxes.id;
 --
 
 CREATE SEQUENCE visit_id_seq
+=======
+ALTER TABLE public.project_cluster_id_seq OWNER TO vleermuizen;
+
+--
+-- Name: project_cluster_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vleermuizen
+--
+
+ALTER SEQUENCE project_cluster_id_seq OWNED BY project_clusters.id;
+
+
+--
+-- Name: project_counters; Type: TABLE; Schema: public; Owner: vleermuizen; Tablespace: 
+--
+
+CREATE TABLE project_counters (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.project_counters OWNER TO vleermuizen;
+
+--
+-- Name: project_counters_id_seq; Type: SEQUENCE; Schema: public; Owner: vleermuizen
+--
+
+CREATE SEQUENCE project_counters_id_seq
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -483,6 +662,7 @@ CREATE SEQUENCE visit_id_seq
     CACHE 1;
 
 
+<<<<<<< HEAD
 ALTER TABLE public.visit_id_seq OWNER TO vleermuizen;
 
 --
@@ -503,6 +683,48 @@ ALTER TABLE public.visit_observers OWNER TO vleermuizen;
 --
 
 CREATE SEQUENCE visit_observers_id_seq
+=======
+ALTER TABLE public.project_counters_id_seq OWNER TO vleermuizen;
+
+--
+-- Name: project_counters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vleermuizen
+--
+
+ALTER SEQUENCE project_counters_id_seq OWNED BY project_counters.id;
+
+
+--
+-- Name: session; Type: TABLE; Schema: public; Owner: vleermuizen; Tablespace: 
+--
+
+CREATE TABLE session (
+    id character(64) NOT NULL,
+    expire integer,
+    data bytea
+);
+
+
+ALTER TABLE public.session OWNER TO vleermuizen;
+
+--
+-- Name: visit_boxes; Type: TABLE; Schema: public; Owner: vleermuizen; Tablespace: 
+--
+
+CREATE TABLE visit_boxes (
+    id integer NOT NULL,
+    visit_id integer,
+    box_id integer
+);
+
+
+ALTER TABLE public.visit_boxes OWNER TO vleermuizen;
+
+--
+-- Name: visit_closets_id_seq; Type: SEQUENCE; Schema: public; Owner: vleermuizen
+--
+
+CREATE SEQUENCE visit_closets_id_seq
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -510,6 +732,7 @@ CREATE SEQUENCE visit_observers_id_seq
     CACHE 1;
 
 
+<<<<<<< HEAD
 ALTER TABLE public.visit_observers_id_seq OWNER TO vleermuizen;
 
 --
@@ -542,6 +765,37 @@ CREATE TABLE visits (
 
 
 ALTER TABLE public.visits OWNER TO vleermuizen;
+=======
+ALTER TABLE public.visit_closets_id_seq OWNER TO vleermuizen;
+
+--
+-- Name: visit_closets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vleermuizen
+--
+
+ALTER SEQUENCE visit_closets_id_seq OWNED BY visit_boxes.id;
+
+
+--
+-- Name: visit_method_id_seq; Type: SEQUENCE; Schema: public; Owner: vleermuizen
+--
+
+CREATE SEQUENCE visit_method_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.visit_method_id_seq OWNER TO vleermuizen;
+
+--
+-- Name: visit_method_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vleermuizen
+--
+
+ALTER SEQUENCE visit_method_id_seq OWNED BY observation_methods.id;
+
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: vleermuizen
@@ -554,35 +808,55 @@ ALTER TABLE ONLY boxtype_entrances ALTER COLUMN id SET DEFAULT nextval('boxtype_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: vleermuizen
 --
 
+<<<<<<< HEAD
 ALTER TABLE ONLY observations ALTER COLUMN id SET DEFAULT nextval('observations_id_seq'::regclass);
+=======
+ALTER TABLE ONLY observation_methods ALTER COLUMN id SET DEFAULT nextval('visit_method_id_seq'::regclass);
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: vleermuizen
 --
 
+<<<<<<< HEAD
 ALTER TABLE ONLY project_clusters ALTER COLUMN id SET DEFAULT nextval('project_cluster_id_seq'::regclass);
+=======
+ALTER TABLE ONLY observations ALTER COLUMN id SET DEFAULT nextval('observations_id_seq'::regclass);
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: vleermuizen
 --
 
+<<<<<<< HEAD
 ALTER TABLE ONLY project_counters ALTER COLUMN id SET DEFAULT nextval('project_counters_id_seq'::regclass);
+=======
+ALTER TABLE ONLY project_clusters ALTER COLUMN id SET DEFAULT nextval('project_cluster_id_seq'::regclass);
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: vleermuizen
 --
 
+<<<<<<< HEAD
 ALTER TABLE ONLY visit_boxes ALTER COLUMN id SET DEFAULT nextval('visit_closets_id_seq'::regclass);
+=======
+ALTER TABLE ONLY project_counters ALTER COLUMN id SET DEFAULT nextval('project_counters_id_seq'::regclass);
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: vleermuizen
 --
 
+<<<<<<< HEAD
 ALTER TABLE ONLY visit_observers ALTER COLUMN id SET DEFAULT nextval('visit_observers_id_seq'::regclass);
+=======
+ALTER TABLE ONLY visit_boxes ALTER COLUMN id SET DEFAULT nextval('visit_closets_id_seq'::regclass);
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 
 --
@@ -658,6 +932,7 @@ ALTER TABLE ONLY observations
 
 
 --
+<<<<<<< HEAD
 -- Name: pk_vo_id; Type: CONSTRAINT; Schema: public; Owner: vleermuizen; Tablespace: 
 --
 
@@ -666,6 +941,8 @@ ALTER TABLE ONLY visit_observers
 
 
 --
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 -- Name: project_cluster_pkey; Type: CONSTRAINT; Schema: public; Owner: vleermuizen; Tablespace: 
 --
 
@@ -746,6 +1023,17 @@ ALTER TABLE ONLY visit_boxes
 
 
 --
+<<<<<<< HEAD
+=======
+-- Name: visit_method_pkey; Type: CONSTRAINT; Schema: public; Owner: vleermuizen; Tablespace: 
+--
+
+ALTER TABLE ONLY observation_methods
+    ADD CONSTRAINT visit_method_pkey PRIMARY KEY (id);
+
+
+--
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 -- Name: idx-auth_item-type; Type: INDEX; Schema: public; Owner: vleermuizen; Tablespace: 
 --
 
@@ -860,6 +1148,17 @@ ALTER TABLE ONLY projects
 
 
 --
+<<<<<<< HEAD
+=======
+-- Name: fk_observeration_id; Type: FK CONSTRAINT; Schema: public; Owner: vleermuizen
+--
+
+ALTER TABLE ONLY visits
+    ADD CONSTRAINT fk_observeration_id FOREIGN KEY (observer_id) REFERENCES users(id) ON DELETE CASCADE;
+
+
+--
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 -- Name: fk_owner_id; Type: FK CONSTRAINT; Schema: public; Owner: vleermuizen
 --
 
@@ -900,6 +1199,7 @@ ALTER TABLE ONLY visit_boxes
 
 
 --
+<<<<<<< HEAD
 -- Name: fk_vo_observer_id_u_id; Type: FK CONSTRAINT; Schema: public; Owner: vleermuizen
 --
 
@@ -916,6 +1216,8 @@ ALTER TABLE ONLY visit_observers
 
 
 --
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 -- PostgreSQL database dump complete
 --
 

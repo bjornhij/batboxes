@@ -6,9 +6,12 @@ use app\models\Users;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 use app\models\BoxtypeEntrances;
+<<<<<<< HEAD
 use yii\widgets\ActiveForm;
 use yii\web\Response;
 
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 class BoxtypesController extends Controller {
 	
@@ -45,11 +48,14 @@ class BoxtypesController extends Controller {
 	public function actionForm($id = NULL) {
 		$model = ($id && Boxtypes::findOne($id)) ? Boxtypes::findOne($id) : new Boxtypes;
 		
+<<<<<<< HEAD
 		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
 			Yii::$app->response->format = Response::FORMAT_JSON;
 			return ActiveForm::validate($model);
 		}
 		
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 		if($model->load(Yii::$app->request->post())) {
 			
 			/* Uploads */

@@ -35,6 +35,7 @@ $dataProvider 	= $searchModel->search(Yii::$app->request->queryParams, ['validat
 				'format' 	=> 'html',
 			],
 			[
+<<<<<<< HEAD
 				'label' 	=> Yii::t('app', 'Waarnemer(s)'),
 				'value' 	=> function($model, $key, $index, $column) {
 					if($model->visit->getObservers()->exists()) {
@@ -45,6 +46,11 @@ $dataProvider 	= $searchModel->search(Yii::$app->request->queryParams, ['validat
 						return implode($returnArray, ', ');
 					}
 					return '#VERWIJDERD';
+=======
+				'label' 	=> Yii::t('app', 'Waarnemer'),
+				'value' 	=> function($model, $key, $index, $column) {
+					return Html::a($model->visit->observer->username, Url::toRoute('#'));
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 				},
 				'format' 	=> 'html',
 			],
@@ -63,6 +69,7 @@ $dataProvider 	= $searchModel->search(Yii::$app->request->queryParams, ['validat
 			],
 			'sight_quantity',
 			[ 
+<<<<<<< HEAD
 				'label'		=> '',
 				'attribute' => 'picture',
 				'value'		=> function($model, $key, $index, $column) {
@@ -73,6 +80,12 @@ $dataProvider 	= $searchModel->search(Yii::$app->request->queryParams, ['validat
 					'align' => 'center',
 					'width' => '25'		
 				]
+=======
+				'attribute' => 'picture',
+				'value'		=> function($model, $key, $index, $column) {
+					return $model->getPictureSet();
+				}
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 			],
 		],
 		'clientOptions' => [

@@ -3,7 +3,10 @@ namespace app\models\queries;
 use Yii;
 use yii\db\Query;
 use app\models\Visits;
+<<<<<<< HEAD
 use app\models\VisitObservers;
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 /**
  * This is the ActiveQuery class for [[\app\models\Observations]].
  *
@@ -21,7 +24,11 @@ class ObservationsQuery extends ActiveQuery {
     }
     
     public function byPersonal() {
+<<<<<<< HEAD
     	return $this->andWhere(['in', 'visit_id', (new Query)->select('id')->from(VisitObservers::tableName())->where(['observer_id' => Yii::$app->user->getId()])]);
+=======
+    	return $this->andWhere(['in', 'visit_id', (new Query)->select('id')->from(Visits::tableName())->where(['observer_id' => Yii::$app->user->getId()])]);
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
     }
     
     public function byValidation($validation) {

@@ -1,14 +1,21 @@
 <?php
 use app\models\Visits;
+<<<<<<< HEAD
 use app\models\Projects;
 use app\models\Users;
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 use app\components\View;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
 use kartik\date\DatePicker;
+<<<<<<< HEAD
 use kartik\select2\Select2;
+=======
+use app\models\Projects;
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 /* @var $form ActiveForm */
 /* @var $model Observations */
 ?>
@@ -17,6 +24,7 @@ use kartik\select2\Select2;
 	<?php if($projects): ?>
 	    <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 	    	<?= $form->field($model, 'project_id')->dropDownList(["" => Yii::t('app', 'Selecteer een project')] + ArrayHelper::map($projects, 'id', 'name')) ?>
+<<<<<<< HEAD
 	    	<?= $form->field($model, 'observers')->widget(Select2::className(), [
 			    'data' 		=> ArrayHelper::map(Users::find()->all(), 'id', 'username'),
 			    'options' 	=> [
@@ -24,6 +32,8 @@ use kartik\select2\Select2;
 			    	'multiple' 	=> true
 			    ],
 			]); ?>
+=======
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 			<?= $form->field($model, 'date')->widget(DatePicker::className(), [
 				'type' => 1,
 				'options' => ['placeholder' => Yii::t('app', 'Selecteer datum')],

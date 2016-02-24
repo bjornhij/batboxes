@@ -22,7 +22,11 @@ $visitModel = new Visits();
 			<td><?= $visitModel->getAttributeLabel('date') ?></td>
 			<td><?= Html::encode($model->visit->date) ?></td>
 		</tr>
+<<<<<<< HEAD
 		<?php if(in_array(Yii::$app->user->getId(), $model->visit->observers) || (is_object(Yii::$app->user->getIdentity()) && Yii::$app->user->getIdentity()->hasRole( 'administrator'))) : ?>
+=======
+		<?php if($model->visit->observer_id == Yii::$app->user->getId() || (is_object(Yii::$app->user->getIdentity()) && Yii::$app->user->getIdentity()->hasRole( 'administrator'))) : ?>
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 			<?php if($model->visit->blur) : ?>
 				<tr>
 					<td><?= $model->visit->getAttributeLabel('blur') ?></td>

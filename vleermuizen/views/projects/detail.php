@@ -32,17 +32,29 @@ $boxModel = new Boxes();
 				</tr>
 				<tr>
 					<td><?= $project->getAttributeLabel('owner_id') ?></td>
+<<<<<<< HEAD
 					<td><?= ($project->owner->username == $project->owner->fullname) ? $project->owner->username : $project->owner->username . ' (' . $project->owner->fullname . ')' ?></td>
 				</tr>
 				<tr>
 					<td><?= $project->getAttributeLabel('main_observer_id') ?></td>
 					<td><?= ($project->mainObserver->username == $project->mainObserver->fullname) ? $project->mainObserver->username : $project->mainObserver->username . ' (' . $project->mainObserver->fullname . ')' ?></td>
+=======
+					<td><?= $project->owner->username . ' (' . $project->owner->fullname . ')' ?></td>
+				</tr>
+				<tr>
+					<td><?= $project->getAttributeLabel('main_observer_id') ?></td>
+					<td><?= $project->mainObserver->username . ' (' . $project->mainObserver->fullname . ')' ?></td>
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 				</tr>
 				<tr>
 					<td><?= Yii::t('app', 'Tellers') ?></td>
 					<td>
 						<?php foreach($project->projectCounters as $index => $pc) :?>
+<<<<<<< HEAD
 							<?= $pc->username ?> <?php if($pc->username != $pc->fullname) : ?>(<?= $pc->fullname ?>)<?php endif; ?><?= (($index+1) < count($project->projectCounters)) ? ', ' : '' ?>
+=======
+							<?= $pc->username ?> (<?= $pc->fullname ?>)<?= (($index+1) < count($project->projectCounters)) ? ', ' : '' ?>
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 						<?php endforeach; ?>
 					</td>
 				</tr>

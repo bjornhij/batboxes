@@ -90,7 +90,11 @@ class ObservationsController extends Controller {
 				$model->save(false);
 				
 				if($model->observation_type != Observations::OBSERVATION_TYPE_NULL && Observations::find()->where(['and', ['deleted' => false], ['box_id' => $model->box_id], ['observation_type' => Observations::OBSERVATION_TYPE_NULL]])->exists())
+<<<<<<< HEAD
 					foreach(Observations::find()->where(['and', ['deleted' => false], ['observation_type' => Observations::OBSERVATION_TYPE_NULL], ['box_id' => $model->box_id]])->all() as $nullObservation)
+=======
+					foreach(Observations::find()->where(['and', ['deleted' => false], ['observation_type' => Observations::OBSERVATION_TYPE_NULL]])->all() as $nullObservation)
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 						$nullObservation->delete();
 				
 				return $this->redirect(Url::toRoute(['visits/detail/'.$model->visit_id]));

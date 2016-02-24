@@ -90,7 +90,11 @@ class BoxesController extends Controller {
 		$clusters = ProjectClusters::find()
 					->select(['cluster as id', 'cluster as text'])
 					->where(['project_id' => $pid])
+<<<<<<< HEAD
 					//->andWhere(['like', 'cluster', $q])
+=======
+					->andWhere(['like', 'cluster', $q])
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 					->asArray(true)
 					->all();
 

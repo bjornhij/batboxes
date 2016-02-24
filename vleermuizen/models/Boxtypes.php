@@ -172,8 +172,13 @@ class Boxtypes extends ActiveRecord {
         	'shape_other' 				=> Yii::t('app', 'Vorm, anders namelijk'),
             'chamber_count' 			=> Yii::t('app', 'Aantal kamers'),
             'material' 					=> Yii::t('app', 'Materiaal'),
+<<<<<<< HEAD
             'dropping_board' 			=> Yii::t('app', 'Mestplankje'),
             'dropping_board_other' 		=> Yii::t('app', 'Mestplankje, anders namelijk'),
+=======
+            'dropping_board' 			=> Yii::t('app', 'Landingsbord'),
+            'dropping_board_other' 		=> Yii::t('app', 'Landingsbord, anders namelijk'),
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
             'picture' 					=> Yii::t('app', 'Afbeelding'),
         	'pictureFile'				=> Yii::t('app', 'Afbeelding'),
         	'deleteImage'				=> Yii::t('app', 'Verwijder huidige afbeelding?'),

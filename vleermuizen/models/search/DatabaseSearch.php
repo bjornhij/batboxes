@@ -1,11 +1,17 @@
 <?php
 namespace app\models\search;
 use Yii;
+<<<<<<< HEAD
 use yii\db\Query;
 use yii\data\ActiveDataProvider;
 use app\models\Observations;
 use app\models\Projects;
 use app\models\VisitObservers;
+=======
+use yii\data\ActiveDataProvider;
+use app\models\Observations;
+use app\models\Projects;
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 
 class DatabaseSearch extends Observations {
 	
@@ -34,7 +40,11 @@ class DatabaseSearch extends Observations {
         		'or',
         		['is', '"visits"."embargo"', NULL],
         		['<=', '"visits"."embargo"', 'NOW()'],
+<<<<<<< HEAD
         		['in', 'visit_id', (new Query)->select('id')->from(VisitObservers::tableName())->where(['observer_id' => $userIdentifier])],
+=======
+        		['visits.observer_id' => $userIdentifier],
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
         	],
         	['<>', 'observations.observation_type', Observations::OBSERVATION_TYPE_NULL]
         ]);

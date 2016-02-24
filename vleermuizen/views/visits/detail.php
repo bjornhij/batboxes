@@ -40,7 +40,11 @@ $visitModel = new Visits();
 		<td><?= $visitModel->getAttributeLabel('count_completeness') ?></td>
 		<td><?= $visit->getCountCompleteness() ?></td>
 	</tr>
+<<<<<<< HEAD
 	<?php if(in_array(Yii::$app->user->getId(), $visit->observers) || (is_object(Yii::$app->user->getIdentity()) && Yii::$app->user->getIdentity()->hasRole( 'administrator'))) : ?>
+=======
+	<?php if($visit->observer_id == Yii::$app->user->getId() || (is_object(Yii::$app->user->getIdentity()) && Yii::$app->user->getIdentity()->hasRole( 'administrator'))) : ?>
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 		<?php if($visit->blur) : ?>
 			<tr>
 				<td><?= $visit->getAttributeLabel('blur') ?></td>
@@ -65,7 +69,11 @@ $visitModel = new Visits();
 <h2>
 	<?= Yii::t('app', 'Waarnemingen') ?>
 	<?php if(Yii::$app->user->can('createObservation', ['visit' => $visit])) : ?>
+<<<<<<< HEAD
 		<a href="<?= Url::toRoute(['observations/form', 'visit_id' => $visit->id]) ?>" class="btn btn-success pull-right"><?= Yii::t('app', 'Waarneming toevoegen')?></a>
+=======
+		<a href="<?= Url::toRoute(['observations/form', 'visit_id' => $visit->id]) ?>" class="btn btn-success pull-right"><?= Yii::t('app', '+')?></a>
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 	<?php endif; ?>
 </h2>
 

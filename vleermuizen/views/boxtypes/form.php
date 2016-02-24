@@ -7,7 +7,11 @@ use yii\bootstrap\ActiveForm;
 ?>
 <h1><?= Yii::t('app', 'Kasttypen')?> <?= ($model->isNewRecord) ? Yii::t('app', 'toevoegen') : Yii::t('app', 'bewerken') ?></h1>
 <div class="boxtype-form">
+<<<<<<< HEAD
 	<?php $form = ActiveForm::begin(['enableAjaxValidation' => true, 'id' => 'boxtypes-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
+=======
+	<?php $form = ActiveForm::begin(['enableClientValidation' => false, 'options' => ['enctype' => 'multipart/form-data']]); ?>
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 		<?= $form->field($model, 'model') ?>
 		<?= $form->field($model, 'manufacturer_id')->dropDownList(["" => ""] + ArrayHelper::map($users, 'id', 'username')) ?>
 		<?= $form->field($model, 'shape')->dropDownList(["" => ""] + Boxtypes::getBoxShapes()) ?>

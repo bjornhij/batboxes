@@ -11,6 +11,17 @@ use app\models\Observations;
 		'filterModel' 	=> $searchModel,
 		'columns' => [
 			[
+<<<<<<< HEAD
+=======
+				'attribute' => 'number',
+				'label'		=> 'ID',
+				'value' 	=> function($model, $key, $index, $column) {
+					return Html::a($model->number, Url::toRoute('/observations/detail/'.$model->id));
+				},
+				'format' 	=> 'html',
+			],
+			[
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 				'attribute' => 'date',
 				'label'		=> 'Datum',
 				'value'		=> function($model, $key, $index, $column) {
@@ -36,6 +47,7 @@ use app\models\Observations;
 				'format' 	=> 'html',
 			],
 			[
+<<<<<<< HEAD
 				'label' 	=> Yii::t('app', 'Waarnemer(s)'),
 				'value' 	=> function($model, $key, $index, $column) {
 					if($model->visit->getObservers()->exists()) {
@@ -46,6 +58,11 @@ use app\models\Observations;
 						return implode($returnArray, ', ');
 					}
 					return '#VERWIJDERD';
+=======
+				'label' 	=> Yii::t('app', 'Waarnemer'),
+				'value' 	=> function($model, $key, $index, $column) {
+					return Html::a($model->visit->observer->username, Yii::$app->params['baseUrl']."users/".str_ireplace(' ', "-", $model->visit->observer->username));
+>>>>>>> 61a704c854038d4f39e156975c6439eae455eecd
 				},
 				'format' 	=> 'html',
 			],
